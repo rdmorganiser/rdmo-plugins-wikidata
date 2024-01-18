@@ -1,5 +1,5 @@
-rdmo-wikidata
-=============
+rdmo-plugins-wikidata
+=====================
 
 This plugin implements dynamic option set, that queries the Wikidata Search API at https://www.wikidata.org/w/api.php. See [Wikidata:Data_access](https://www.wikidata.org/wiki/Wikidata:Data_access) for more information about the different Wikidata endpoints. Please also note the access best practices on the same page.
 
