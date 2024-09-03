@@ -11,7 +11,7 @@ class WikidataProvider(Provider):
 
     search = True
 
-    def get_options(self, project, search=None):
+    def get_options(self, project, search=None, user=None, site=None):
         if search:
             url = getattr(settings, 'WIKIDATA_PROVIDER_URL', 'https://www.wikidata.org/w/api.php')
             headers = getattr(settings, 'WIKIDATA_PROVIDER_HEADERS', {})
