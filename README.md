@@ -26,6 +26,6 @@ Wikidata's policy asks to add a custom `User-Agent` to your requests so that the
 
 ```python
 WIKIDATA_PROVIDER_HEADERS = {
-    'User-Agent': 'rdmo.example.com/0.0 (mail@rdmo.example.com) rdmo-wikidata/1.0'
+    'User-Agent': 'rdmo.example.com/0.0 (mail@rdmo.example.com) rdmo-plugins-wikidata/1.0'
 }
 ```
