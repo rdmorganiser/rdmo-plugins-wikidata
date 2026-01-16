@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.utils.html import strip_tags
 
@@ -18,7 +20,7 @@ class WikidataProvider(Provider):
             response = requests.get(f'{url}/search', params={
                 'action': 'query',
                 'list': 'search',
-                'srsearch': search,
+                'srsearch': self.get_search(search),
                 'srprop': 'titlesnippet|snippet',
                 'format': 'json'
             }, headers=headers)
@@ -35,10 +37,35 @@ class WikidataProvider(Provider):
                 else:
                     return [
                         {
-                            'id': item['title'],
-                            'text': strip_tags('{titlesnippet} ({snippet}) [{title}]'.format(**item))
+                            'id': self.get_id(item),
+                            'text': self.get_text(item)
                         } for item in items
                     ]
 
         # return an empty list by default
         return []
+
+    def get_id(self, item):
+        return item['title']
+
+    def get_text(self, item):
+        wd_id = item['title']
+
+        wd_text = ''
+        if item.get('titlesnippet'):
+            wd_text += strip_tags(item['titlesnippet'])
+        if item.get('snippet'):
+            wd_text += f' ({strip_tags(item['snippet'])})'
+
+        wd_link = f'<a href="https://www.wikidata.org/wiki/{wd_id}">{wd_id}</a>'
+        return f'{wd_text} [{wd_link}]'
+
+    def get_search(self, search):
+        # reverse get_text to perform the search, remove everything after (
+        match = re.match(r'^[^([]+', search)
+        if match:
+            tokens = match[0].split()
+        else:
+            tokens = search.split()
+
+        return '+AND+'.join(tokens)
