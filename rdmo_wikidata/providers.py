@@ -10,20 +10,23 @@ from rdmo.options.providers import Provider
 
 
 class WikidataProvider(Provider):
-
     search = True
 
     def get_options(self, project, search=None, user=None, site=None):
         if search:
             url = getattr(settings, 'WIKIDATA_PROVIDER_URL', 'https://www.wikidata.org/w/api.php')
             headers = getattr(settings, 'WIKIDATA_PROVIDER_HEADERS', {})
-            response = requests.get(f'{url}/search', params={
-                'action': 'query',
-                'list': 'search',
-                'srsearch': self.get_search(search),
-                'srprop': 'titlesnippet|snippet',
-                'format': 'json'
-            }, headers=headers)
+            response = requests.get(
+                f'{url}/search',
+                params={
+                    'action': 'query',
+                    'list': 'search',
+                    'srsearch': self.get_search(search),
+                    'srprop': 'titlesnippet|snippet',
+                    'format': 'json',
+                },
+                headers=headers,
+            )
 
             try:
                 data = response.json()
